@@ -18,9 +18,17 @@
         "button_text": "Shop Now",
         "button_link": ""
       }
+    },
+     "collection-grid": {
+      "type": "collection-grid",
+      "settings": {
+        "heading": "Our Featured Products",
+        "subheading": "Get the skin you wanna feel.",
+      }
     }
   },
+  
   "order": [
-    "hero"
+    "hero","collection-grid"
   ]
 }
