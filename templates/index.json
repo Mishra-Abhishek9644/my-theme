@@ -13,22 +13,23 @@
       "type": "hero",
       "settings": {
         "bg_image": "shopify://shop_images/hero-slider-01.jpg",
+        "topheading": "Essential Items",
         "heading": "Discover Your Inner Glow",
         "subheading": "Premium beauty products crafted to enhance your natural beauty.",
         "button_text": "Shop Now",
         "button_link": ""
       }
     },
-     "collection-grid": {
+    "collection-grid": {
       "type": "collection-grid",
       "settings": {
-        "heading": "Our Featured Products",
-        "subheading": "Get the skin you wanna feel.",
+        "collection": "summer-collection",
+        "products_limit": 4
       }
     }
   },
-  
   "order": [
-    "hero","collection-grid"
+    "hero",
+    "collection-grid"
   ]
 }
