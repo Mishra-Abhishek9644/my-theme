@@ -1,0 +1,62 @@
+<header class="site-header">
+
+  <!-- Top Bar -->
+  <div class="header-top-bar">
+    <p>{{ section.settings.top_promo_text }}</p>
+  </div>
+
+  <div class="header-main">
+    <!-- Logo -->
+    <nav class="header-nav">
+      {% for link in linklists.main-menu.links %}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {% endfor %}
+    </nav>
+    
+    <div class="header-logo">
+      {% if section.settings.logo != blank %}
+        <a href="/">
+          <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}">
+        </a>
+      {% else %}
+        <a href="/" class="logo-text">{{ shop.name }}</a>
+      {% endif %}
+    </div>
+
+    <!-- Navigation -->
+
+    <!-- Icons -->
+    <div class="header-icons">
+      <!-- Search (placeholder, add functionality later) -->
+      <a href="#" class="icon-search">🔍</a>
+
+      <!-- Account -->
+      <a href="/account" class="icon-account">👤</a>
+
+      <!-- Cart -->
+      <a href="/cart" class="icon-cart">
+        🛒 ({{ cart.item_count }})
+      </a>
+    </div>
+  </div>
+
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "top_promo_text",
+      "label": "Top bar promo text",
+      "default": "Free Shipping on orders over ₹999!"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    }
+  ]
+}
+{% endschema %}
