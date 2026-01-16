@@ -1,10 +1,10 @@
-<section class="relative w-full">
+<section class="relative w-full h-[90vh]">
   <!-- Background Image -->
   {% if section.settings.bg_image != blank %}
     <img
       src="{{ section.settings.bg_image | image_url: width: 2000 }}"
       alt="Hero image"
-      class="w-full h-[70vh] object-cover"
+      class="w-full h-[100vh] object-cover"
     >
   {% else %}
     <div class="w-full h-[70vh] bg-gray-200"></div>
