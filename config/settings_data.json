@@ -8,5 +8,23 @@
  * ------------------------------------------------------------
  */
 {
-  "current": {}
+  "current": {
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "top_promo_text": "Free Shipping on orders over ₹999!",
+          "logo": "shopify://shop_images/logo-dark.png"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "menu": "",
+          "show_payment_icons": true
+        }
+      }
+    },
+    "content_for_index": []
+  }
 }
