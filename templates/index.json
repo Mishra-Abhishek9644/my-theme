@@ -23,7 +23,7 @@
     "collection-grid": {
       "type": "collection-grid",
       "settings": {
-        "collection": "summer-collection",
+        "collection": "frontpage",
         "products_limit": 4
       }
     }
