@@ -1,4 +1,79 @@
-<section style="padding: 60px; text-align: center;">
-  <h1>Shopify Theme Running ✅</h1>
-  <p>If you see this, everything works.</p>
+<section class="relative w-full">
+
+  <!-- Background Image -->
+  {% if section.settings.bg_image != blank %}
+    <img
+      src="{{ section.settings.bg_image | image_url: width: 2000 }}"
+      alt="Hero image"
+      class="w-full h-[70vh] object-cover"
+    >
+  {% else %}
+    <div class="w-full h-[70vh] bg-gray-200"></div>
+  {% endif %}
+
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-black/30"></div>
+
+  <!-- Content -->
+  <div class="absolute inset-0 flex items-center">
+    <div class="max-w-6xl mx-auto px-6 text-white">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">
+        {{ section.settings.heading }}
+      </h1>
+
+      <p class="text-lg md:text-xl mb-6 max-w-xl">
+        {{ section.settings.subheading }}
+      </p>
+
+      {% if section.settings.button_text != blank %}
+        <a
+          href="{{ section.settings.button_link }}"
+          class="inline-block bg-[#4d7560] hover:bg-[#3e5f4f] text-white px-6 py-3 font-medium"
+        >
+          {{ section.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
 </section>
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Discover Your Inner Glow"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Premium beauty products crafted to enhance your natural beauty."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}
