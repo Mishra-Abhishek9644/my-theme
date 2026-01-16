@@ -1,5 +1,4 @@
 <section class="bg-white p-14">
-
   <!-- Heading -->
   <div class="text-black flex flex-col justify-center items-center gap-5">
     <h1 class="text-4xl font-semibold">Our Featured Products</h1>
@@ -7,16 +6,14 @@
   </div>
 
   <!-- Product Cards -->
-  <div class="max-w-7xl mx-auto mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
-
+  <div class="max-w-8xl  mx-auto mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
     {% if section.settings.collection != blank %}
       {% assign featured_collection = collections[section.settings.collection] %}
 
       {% for product in featured_collection.products limit: section.settings.products_limit %}
-        <a href="{{ product.url }}" class="group block">
-
+        <a href="{{ product.url }}" class="group block flex flex-col justify-center gap-2 items-center h-[520px]">
           <!-- Product Image -->
-          <div class="aspect-square bg-gray-100 overflow-hidden rounded-md">
+          <div class="h-[420px] w-full bg-gray-100 overflow-hidden rounded-md">
             {% if product.featured_image %}
               <img
                 src="{{ product.featured_image | image_url: width: 800 }}"
@@ -38,13 +35,10 @@
               {{ product.price | money }}
             </p>
           </div>
-
         </a>
       {% endfor %}
     {% endif %}
-
   </div>
-
 </section>
 {% schema %}
 {
