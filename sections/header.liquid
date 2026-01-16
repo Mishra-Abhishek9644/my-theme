@@ -1,62 +1,80 @@
-<header class="site-header">
+<!-- Top Promo Bar -->
+<div class="flex justify-center bg-[#4d7560] text-white p-2 text-sm">
+  <p>Free Shipping on all orders ₹999+</p>
+</div>
 
-  <!-- Top Bar -->
-  <div class="header-top-bar">
-    <p>{{ section.settings.top_promo_text }}</p>
+<!-- Header Main -->
+<div class="header-main grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_auto_1fr] items-center px-6 py-4 bg-white">
+
+  <!-- Hamburger (mobile only) -->
+  <button
+    id="mobile-menu-open"
+    class="md:hidden text-2xl"
+    aria-label="Open menu"
+  >
+    ☰
+  </button>
+
+  <!-- Desktop Navigation -->
+  <nav class="hidden md:flex gap-6 justify-self-start">
+    {% for link in linklists['main-menu'].links %}
+      <a href="{{ link.url }}" class="text-gray-700 font-medium hover:underline">
+        {{ link.title }}
+      </a>
+    {% endfor %}
+  </nav>
+
+  <!-- Logo (centered) -->
+  <div class="flex justify-center">
+    {% if section.settings.logo != blank %}
+      <img
+        src="{{ section.settings.logo | image_url: width: 200 }}"
+        class="h-10"
+        alt="{{ shop.name }}"
+      />
+    {% else %}
+      <span class="text-xl font-bold">{{ shop.name }}</span>
+    {% endif %}
   </div>
 
-  <div class="header-main">
-    <!-- Logo -->
-    <nav class="header-nav">
-      {% for link in linklists.main-menu.links %}
-        <a href="{{ link.url }}">{{ link.title }}</a>
+  <!-- Icons -->
+  <div class="flex gap-4 justify-self-end">
+    <a href="#" aria-label="Search">🔍</a>
+    <a href="/account" aria-label="Account">👤</a>
+    <a href="/cart" aria-label="Cart">
+      🛒 ({{ cart.item_count }})
+    </a>
+  </div>
+
+</div>
+<!-- Mobile Menu Overlay -->
+<div
+  id="mobile-menu"
+  class="fixed inset-0 bg-black/40 hidden z-50"
+>
+  <!-- Drawer -->
+  <div class="bg-white w-4/5 max-w-sm h-full p-6">
+
+    <!-- Close button -->
+    <button
+      id="mobile-menu-close"
+      class="text-2xl mb-6"
+      aria-label="Close menu"
+    >
+      ✕
+    </button>
+
+    <!-- Mobile Navigation -->
+    <nav class="flex flex-col gap-4">
+      {% for link in linklists['main-menu'].links %}
+        <a
+          href="{{ link.url }}"
+          class="text-lg font-medium text-gray-800"
+        >
+          {{ link.title }}
+        </a>
       {% endfor %}
     </nav>
-    
-    <div class="header-logo">
-      {% if section.settings.logo != blank %}
-        <a href="/">
-          <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}">
-        </a>
-      {% else %}
-        <a href="/" class="logo-text">{{ shop.name }}</a>
-      {% endif %}
-    </div>
 
-    <!-- Navigation -->
-
-    <!-- Icons -->
-    <div class="header-icons">
-      <!-- Search (placeholder, add functionality later) -->
-      <a href="#" class="icon-search">🔍</a>
-
-      <!-- Account -->
-      <a href="/account" class="icon-account">👤</a>
-
-      <!-- Cart -->
-      <a href="/cart" class="icon-cart">
-        🛒 ({{ cart.item_count }})
-      </a>
-    </div>
   </div>
-
-</header>
-
-{% schema %}
-{
-  "name": "Header",
-  "settings": [
-    {
-      "type": "text",
-      "id": "top_promo_text",
-      "label": "Top bar promo text",
-      "default": "Free Shipping on orders over ₹999!"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo image"
-    }
-  ]
-}
-{% endschema %}
+</div>

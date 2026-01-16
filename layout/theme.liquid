@@ -4,8 +4,11 @@
     <title>{{ page_title }}</title>
     {{ content_for_header }}
     {{ 'main.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'browser.js' | asset_url }}" defer></script>
+
   </head>
   <body>
+     
     {% section 'header' %}
 
     <main>
