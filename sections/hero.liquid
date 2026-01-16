@@ -1,5 +1,4 @@
 <section class="relative w-full">
-
   <!-- Background Image -->
   {% if section.settings.bg_image != blank %}
     <img
@@ -14,27 +13,27 @@
   <!-- Overlay -->
   <div class="absolute inset-0 bg-black/30"></div>
 
-  <!-- Content -->
-  <div class="absolute inset-0 flex items-center">
-    <div class="max-w-6xl mx-auto px-6 text-white">
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">
-        {{ section.settings.heading }}
-      </h1>
+ <!-- Content -->
+<div class="absolute inset-0 flex items-end">
+  <div class="max-w-xl px-6 pb-12 text-white">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">
+      {{ section.settings.heading }}
+    </h1>
 
-      <p class="text-lg md:text-xl mb-6 max-w-xl">
-        {{ section.settings.subheading }}
-      </p>
+    <p class="text-lg md:text-xl mb-6">
+      {{ section.settings.subheading }}
+    </p>
 
-      {% if section.settings.button_text != blank %}
-        <a
-          href="{{ section.settings.button_link }}"
-          class="inline-block bg-[#4d7560] hover:bg-[#3e5f4f] text-white px-6 py-3 font-medium"
-        >
-          {{ section.settings.button_text }}
-        </a>
-      {% endif %}
-    </div>
+    {% if section.settings.button_text != blank %}
+      <a
+        href="{{ section.settings.button_link }}"
+        class="inline-block bg-[#4d7560] hover:bg-[#3e5f4f] text-white px-6 py-3 font-medium"
+      >
+        {{ section.settings.button_text }}
+      </a>
+    {% endif %}
   </div>
+</div>
 
 </section>
 {% schema %}
