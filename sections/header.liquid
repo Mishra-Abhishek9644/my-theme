@@ -1,11 +1,10 @@
 <!-- Top Promo Bar -->
-<div class="flex justify-center bg-[#4d7560] text-white p-2 text-sm">
+<div class="flex justify-center bg-[#4d7560] text-white p-2 ">
   <p>Free Shipping on all orders ₹999+</p>
 </div>
 
 <!-- Header Main -->
-<div class="header-main grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_auto_1fr] items-center px-6 py-4 bg-white">
-
+<div class="header-main grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_auto_1fr] items-center px-6 py-6 bg-white">
   <!-- Hamburger (mobile only) -->
   <button
     id="mobile-menu-open"
@@ -16,9 +15,9 @@
   </button>
 
   <!-- Desktop Navigation -->
-  <nav class="hidden md:flex gap-6 justify-self-start">
+  <nav class="hidden md:flex gap-10 justify-self-start">
     {% for link in linklists['main-menu'].links %}
-      <a href="{{ link.url }}" class="text-gray-700 font-medium hover:underline">
+      <a href="{{ link.url }}" class="text-black font-medium text-lg hover:underline">
         {{ link.title }}
       </a>
     {% endfor %}
@@ -28,10 +27,12 @@
   <div class="flex justify-center">
     {% if section.settings.logo != blank %}
       <img
-        src="{{ section.settings.logo | image_url: width: 200 }}"
-        class="h-10"
+        src="{{ section.settings.logo | image_url: width: 500 }}"
+        class="h-7 w-45"
+        height=""
+        width=""
         alt="{{ shop.name }}"
-      />
+      >
     {% else %}
       <span class="text-xl font-bold">{{ shop.name }}</span>
     {% endif %}
@@ -39,13 +40,70 @@
 
   <!-- Icons -->
   <div class="flex gap-4 justify-self-end">
-    <a href="#" aria-label="Search">🔍</a>
-    <a href="/account" aria-label="Account">👤</a>
-    <a href="/cart" aria-label="Cart">
-      🛒 ({{ cart.item_count }})
+    <a href="#" aria-label="Search">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="30"
+        height="30"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-search-icon lucide-search"
+      >
+        <path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>
+      </svg>
+    </a>
+    <a href="/account" aria-label="Account">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+       width="30"
+        height="30"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-user-round-icon lucide-user-round"
+      >
+        <circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>
+      </svg>
+    </a>
+    <a href="/cart" aria-label="Cart" class="relative inline-flex">
+      <!-- Cart Icon -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="30"
+        height="30"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-shopping-bag"
+      >
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+        <path d="M3.103 6.034h17.794"/>
+        <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
+      </svg>
+
+      <!-- Cart Count Badge -->
+      {% if cart.item_count > 0 %}
+        <span
+          class="
+            absolute -top-2 -right-2 bg-[#4d7560] text-white text-xs
+            w-5 h-5 flex items-center justify-center rounded-full
+          "
+        >
+          {{ cart.item_count }}
+        </span>
+      {% endif %}
     </a>
   </div>
-
 </div>
 <!-- Mobile Menu Overlay -->
 <div
@@ -54,7 +112,6 @@
 >
   <!-- Drawer -->
   <div class="bg-white w-4/5 max-w-sm h-full p-6">
-
     <!-- Close button -->
     <button
       id="mobile-menu-close"
@@ -65,17 +122,16 @@
     </button>
 
     <!-- Mobile Navigation -->
-    <nav class="flex flex-col gap-4">
+    <nav class="flex flex-col gap-4 ">
       {% for link in linklists['main-menu'].links %}
         <a
           href="{{ link.url }}"
-          class="text-lg font-medium text-gray-800"
+          class="text-lg font-medium text-black"
         >
           {{ link.title }}
         </a>
       {% endfor %}
     </nav>
-
   </div>
 </div>
 {% schema %}

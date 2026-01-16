@@ -4,6 +4,8 @@
     <img
       src="{{ section.settings.bg_image | image_url: width: 2000 }}"
       alt="Hero image"
+      height=""
+      width=""
       class="w-full h-[100vh] object-cover"
     >
   {% else %}
@@ -11,23 +13,26 @@
   {% endif %}
 
   <!-- Overlay -->
-  <div class="absolute inset-0 bg-black/30"></div>
+  <div class="absolute inset-0 "></div>
 
  <!-- Content -->
-<div class="absolute inset-0 flex items-end">
-  <div class="max-w-xl px-6 pb-12 text-white">
+<div class="absolute inset-0 flex items-center">
+  <div class="max-w-xl px-6 pb-12 text-black">
+    <h3 class="text-lg md:text-xl mb-6">
+      {{ section.settings.topheading }}
+    </h3>
     <h1 class="text-4xl md:text-5xl font-bold mb-4">
       {{ section.settings.heading }}
     </h1>
 
-    <p class="text-lg md:text-xl mb-6">
+    <p class="text-gray-700 text-lg md:text-xl mb-6">
       {{ section.settings.subheading }}
     </p>
 
     {% if section.settings.button_text != blank %}
       <a
         href="{{ section.settings.button_link }}"
-        class="inline-block bg-[#4d7560] hover:bg-[#3e5f4f] text-white px-6 py-3 font-medium"
+        class="inline-block bg-black hover:bg-[#3e5f4f] text-white rounded-sm px-6 py-3 font-medium"
       >
         {{ section.settings.button_text }}
       </a>
@@ -47,9 +52,15 @@
     },
     {
       "type": "text",
+      "id": "topheading",
+      "label": "Top-Heading",
+      "default": "Essential Items"
+    },
+    {
+      "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Discover Your Inner Glow"
+      "default": "Beauty Inspired by Real Life"
     },
     {
       "type": "textarea",
