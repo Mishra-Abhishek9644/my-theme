@@ -26,9 +26,10 @@
         "slide_DktKdN": {
           "type": "slide",
           "settings": {
-            "topheading": "Essential Items",
-            "heading": "Beauty Inspired by Real Life",
-            "subheading": "Premium beauty products crafted to enhance your natural beauty.",
+            "bg_image": "shopify://shop_images/hero-slider-03.jpg",
+            "topheading": "New Collection",
+            "heading": "Get The Perfectly Hydrated Skin",
+            "subheading": "Made Using clean, non-toxic ingredients, our product are designed for everyone",
             "button_text": "Shop Now",
             "button_link": ""
           }
