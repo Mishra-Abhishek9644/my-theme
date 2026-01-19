@@ -11,14 +11,45 @@
   "sections": {
     "hero": {
       "type": "hero",
-      "settings": {
-        "bg_image": "shopify://shop_images/hero-slider-01.jpg",
-        "topheading": "Essential Items",
-        "heading": "Discover Your Inner Glow",
-        "subheading": "Premium beauty products crafted to enhance your natural beauty.",
-        "button_text": "Shop Now",
-        "button_link": ""
-      }
+      "blocks": {
+        "slide_fneTcW": {
+          "type": "slide",
+          "settings": {
+            "bg_image": "shopify://shop_images/hero-slider-01.jpg",
+            "topheading": "Essential Items",
+            "heading": "Beauty Inspired by Real Life",
+            "subheading": "Premium beauty products crafted to enhance your natural beauty.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        },
+        "slide_DktKdN": {
+          "type": "slide",
+          "settings": {
+            "topheading": "Essential Items",
+            "heading": "Beauty Inspired by Real Life",
+            "subheading": "Premium beauty products crafted to enhance your natural beauty.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        },
+        "slide_ExE9rc": {
+          "type": "slide",
+          "settings": {
+            "topheading": "Essential Items",
+            "heading": "Beauty Inspired by Real Life",
+            "subheading": "Premium beauty products crafted to enhance your natural beauty.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_fneTcW",
+        "slide_DktKdN",
+        "slide_ExE9rc"
+      ],
+      "settings": {}
     },
     "collection-grid": {
       "type": "collection-grid",
