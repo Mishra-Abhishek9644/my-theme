@@ -1,6 +1,24 @@
 console.log("main.js loaded");
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (window.AOS) {
+    AOS.init({
+      duration: 800,
+      easing: "ease-out-cubic",
+      once: false,   // 🔑 IMPORTANT: animate EVERY time on scroll
+      offset: 120
+    });
+  }
+});
+
+document.addEventListener("shopify:section:load", () => {
+  if (window.AOS) {
+    AOS.refresh();
+  }
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
   const openBtn = document.getElementById("mobile-menu-open");
   const closeBtn = document.getElementById("mobile-menu-close");
   const menu = document.getElementById("mobile-menu");

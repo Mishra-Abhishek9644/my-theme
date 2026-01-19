@@ -8,12 +8,13 @@
       class="absolute inset-0 transition-opacity duration-1000
       {% if forloop.first %}opacity-100{% else %}opacity-0{% endif %}"
       data-hero-slide
+      data-aos="zoom-out"
     >
 
       <!-- Background Image -->
       {% if block.settings.bg_image != blank %}
         <img
-          src="{{ block.settings.bg_image | image_url: width: 2000 }}"
+          src="{{ block.settings.bg_image | image_url: width: 5000 }}"
           alt="Hero image"
           class="w-full h-full object-cover"
         >
@@ -84,7 +85,7 @@
           "type": "textarea",
           "id": "subheading",
           "label": "Subheading",
-          "default": "Premium beauty products crafted to enhance your natural beauty."
+          "default": "Made Using clean, non-toxic ingredients, our product are designed for everyone"
         },
         {
           "type": "text",
