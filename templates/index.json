@@ -37,9 +37,10 @@
         "slide_ExE9rc": {
           "type": "slide",
           "settings": {
-            "topheading": "Essential Items",
-            "heading": "Beauty Inspired by Real Life",
-            "subheading": "Premium beauty products crafted to enhance your natural beauty.",
+            "bg_image": "shopify://shop_images/hero-slider-02.jpg",
+            "topheading": "Get The Glow",
+            "heading": "Be Your Kind of Beauty",
+            "subheading": "",
             "button_text": "Shop Now",
             "button_link": ""
           }
