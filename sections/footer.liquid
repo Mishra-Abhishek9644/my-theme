@@ -1,56 +1,161 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
+<footer class="bg-white border-t border-gray-200 mt-20">
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+  <!-- Top Footer -->
+  <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-10">
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
+    <!-- Brand / About -->
+    <div>
+      <h3 class="text-lg font-semibold mb-4">
+        {{ shop.name }}
+      </h3>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        {{ section.settings.about_text }}
+      </p>
+    </div>
+
+    <!-- Footer Menu 1 -->
+    {% if section.settings.menu_1 != blank %}
+      <div>
+        <h4 class="text-sm font-semibold mb-4">
+          {{ section.settings.menu_1_title }}
+        </h4>
+        <ul class="space-y-3">
+          {% for link in section.settings.menu_1.links %}
+            <li>
+              <a
+                href="{{ link.url }}"
+                class="text-sm text-gray-600 hover:text-black transition"
+              >
+                {{ link.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     {% endif %}
-  </div>
-</footer>
 
-{% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
+    <!-- Footer Menu 2 -->
+    {% if section.settings.menu_2 != blank %}
+      <div>
+        <h4 class="text-sm font-semibold mb-4">
+          {{ section.settings.menu_2_title }}
+        </h4>
+        <ul class="space-y-3">
+          {% for link in section.settings.menu_2.links %}
+            <li>
+              <a
+                href="{{ link.url }}"
+                class="text-sm text-gray-600 hover:text-black transition"
+              >
+                {{ link.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <!-- Newsletter / Extra -->
+    <div>
+      <h4 class="text-sm font-semibold mb-4">
+        {{ section.settings.newsletter_title }}
+      </h4>
+      <p class="text-sm text-gray-600 mb-4">
+        {{ section.settings.newsletter_text }}
+      </p>
+      <a
+        href="/account/register"
+        class="inline-block text-sm font-medium underline"
+      >
+        Join our community
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+
+      <!-- Copyright -->
+      <div class="text-xs text-gray-500">
+        &copy; {{ 'now' | date: '%Y' }}
+        <a href="{{ routes.root_url }}" class="hover:underline">
+          {{ shop.name }}
+        </a>.
+        {{ powered_by_link }}
+      </div>
+
+      <!-- Payment Icons -->
+      {% if section.settings.show_payment_icons %}
+        <div class="flex items-center gap-3">
+          {% for type in shop.enabled_payment_types %}
+            <span class="h-6">
+              {{ type | payment_type_svg_tag }}
+            </span>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+</footer>
 
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "Footer",
   "settings": [
     {
+      "type": "textarea",
+      "id": "about_text",
+      "label": "About text",
+      "default": "Premium beauty products crafted to enhance your natural glow."
+    },
+    {
       "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "id": "menu_1",
+      "label": "Footer menu 1"
+    },
+    {
+      "type": "text",
+      "id": "menu_1_title",
+      "label": "Menu 1 title",
+      "default": "Shop"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_2",
+      "label": "Footer menu 2"
+    },
+    {
+      "type": "text",
+      "id": "menu_2_title",
+      "label": "Menu 2 title",
+      "default": "Company"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Right column title",
+      "default": "Stay connected"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Right column text",
+      "default": "Be the first to know about new launches and offers."
     },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
+      "label": "Show payment icons",
       "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer (Full)"
     }
   ]
 }
