@@ -1,47 +1,93 @@
 {% comment %}
-  This section is used in the collection template to render collection page
-  listing all products within a collection.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+  Collection template – styled like Featured Products cards
 {% endcomment %}
 
-<h1>{{ collection.title }}</h1>
+<section class="bg-white px-12 py-10">
+  <!-- Collection Heading -->
+  <div class="text-black flex flex-col justify-center items-center gap-3 mb-12">
+    <h1 class="text-4xl font-semibold">
+      {{ collection.title }}
+    </h1>
+  </div>
 
-<div class="collection-products">
-  {% paginate collection.products by 20 %}
-    {% for product in collection.products %}
-      <div class="collection-product">
-        {% if product.featured_image %}
-          {% render 'image',
-            class: 'collection-product__image',
-            image: product.featured_image,
-            url: product.url,
-            width: 400,
-            height: 400,
-            crop: 'center'
-          %}
+  {% paginate collection.products by 12 %}
+    <!-- Products Grid -->
+    <div class="max-w-8xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
+      {% for product in collection.products %}
+        <a
+          href="{{ product.url }}"
+          class="group block flex flex-col justify-center gap-2 items-center h-[520px]"
+        >
+          <!-- Product Image -->
+          <div class="h-[420px] w-full bg-gray-100 overflow-hidden rounded-md">
+            {% if product.featured_image %}
+              <img
+                src="{{ product.featured_image | image_url: width: 800 }}"
+                alt="{{ product.title | escape }}"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                height=""
+                width=""
+              >
+            {% endif %}
+          </div>
+
+          <!-- Product Info -->
+          <div class="mt-4 text-center">
+            <h3 class="text-lg font-medium text-black">
+              {{ product.title }}
+            </h3>
+
+            <p class="text-gray-700 mt-1">
+              {{ product.price | money }}
+            </p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <nav class="flex items-center justify-center m-2 gap-2 text-sm">
+      {% if paginate.previous %}
+        <a
+          href="{{ paginate.previous.url }}"
+          class="px-4 py-2 border rounded-md hover:bg-black hover:text-white transition"
+        >
+          ← Prev
+        </a>
+      {% endif %}
+
+      {% for part in paginate.parts %}
+        {% if part.is_link %}
+          <a
+            href="{{ part.url }}"
+            class="px-4 py-3 border rounded-full hover:bg-black hover:text-white transition"
+          >
+            {{ part.title }}
+          </a>
+        {% else %}
+          <span
+            class="px-4 py-3 border rounded-full bg-black text-white"
+          >
+            {{ part.title }}
+          </span>
         {% endif %}
-        <div class="collection-product__content">
-          <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money }}</p>
-        </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
 
-    {{ paginate | default_pagination }}
+      {% if paginate.next %}
+        <a
+          href="{{ paginate.next.url }}"
+          class="px-4 py-2 border rounded-md hover:bg-black hover:text-white transition"
+        >
+          Next →
+        </a>
+      {% endif %}
+    </nav>
   {% endpaginate %}
-</div>
-
-{% stylesheet %}
-  .collection-products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-  }
-{% endstylesheet %}
+</section>
 
 {% schema %}
 {
-  "name": "t:general.collection",
+  "name": "Collection",
   "settings": []
 }
 {% endschema %}

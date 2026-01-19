@@ -1,33 +1,121 @@
 {% comment %}
-  This section is used in the cart template to render /cart page with an
-  overview of the items in customer's cart.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
+  Cart page – clean & modern UI
 {% endcomment %}
 
-<h1>{{ 'cart.title' | t }}</h1>
+<section class="bg-white px-6 lg:px-16 py-16">
+  <div class="max-w-6xl mx-auto">
 
-<form action="{{ routes.cart_url }}" method="post">
-  <table>
-    {% for item in cart.items %}
-      <tr>
-        <td>
-          {% render 'image', image: item.image, url: item.url %}
-        </td>
-        <td>
-          <p>{{ item.product.title }}</p>
-          {{ 'cart.remove' | t | link_to: item.url_to_remove }}
-        </td>
-        <td>
-          <input type="text" name="updates[]" value="{{ item.quantity }}">
-          <input type="submit" value="{{ 'cart.update' | t }}">
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+    <!-- Heading -->
+    <h1 class="text-3xl font-semibold mb-10">
+      {{ 'cart.title' | t }}
+    </h1>
 
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
-</form>
+    {% if cart.item_count > 0 %}
+      <form action="{{ routes.cart_url }}" method="post">
+
+        <!-- Cart Items -->
+        <div class="divide-y border-t border-b">
+          {% for item in cart.items %}
+            <div class="py-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+
+              <!-- Product Image -->
+              <div class="w-24 h-24 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
+                {% if item.image %}
+                  {% render 'image', image: item.image, url: item.url %}
+                {% endif %}
+              </div>
+
+              <!-- Product Info -->
+              <div class="flex-1">
+                <a
+                  href="{{ item.url }}"
+                  class="text-lg font-medium text-black hover:underline"
+                >
+                  {{ item.product.title }}
+                </a>
+
+                {% if item.variant.title != 'Default Title' %}
+                  <p class="text-sm text-gray-500 mt-1">
+                    {{ item.variant.title }}
+                  </p>
+                {% endif %}
+
+                <p class="text-sm text-gray-600 mt-2">
+                  {{ item.price | money }}
+                </p>
+
+                <a
+                  href="{{ item.url_to_remove }}"
+                  class="text-sm text-gray-500 hover:text-black underline mt-2 inline-block"
+                >
+                  {{ 'cart.remove' | t }}
+                </a>
+              </div>
+
+              <!-- Quantity -->
+              <div class="flex items-center gap-2">
+                <input
+                  type="number"
+                  name="updates[]"
+                  value="{{ item.quantity }}"
+                  min="1"
+                  class="w-20 border rounded-md px-3 py-2 text-center"
+                >
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Cart Footer -->
+        <div class="mt-10 flex flex-col sm:flex-row justify-between gap-6">
+
+          <!-- Subtotal -->
+          <div class="text-lg">
+            <span class="text-gray-600">Subtotal:</span>
+            <span class="font-medium text-black ml-2">
+              {{ cart.total_price | money }}
+            </span>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex gap-4">
+            <button
+              type="submit"
+              class="border border-black px-6 py-3 rounded-md
+                     hover:bg-black hover:text-white transition"
+            >
+              {{ 'cart.update' | t }}
+            </button>
+
+            <button
+              type="submit"
+              name="checkout"
+              class="bg-black text-white px-8 py-3 rounded-md
+                     hover:bg-gray-900 transition"
+            >
+              {{ 'cart.checkout' | t }}
+            </button>
+          </div>
+        </div>
+
+      </form>
+    {% else %}
+      <!-- Empty Cart -->
+      <div class="text-center py-20">
+        <p class="text-lg text-gray-600 mb-6">
+          Your cart is currently empty.
+        </p>
+        <a
+          href="{{ routes.all_products_collection_url }}"
+          class="inline-block bg-black text-white px-8 py-3 rounded-md hover:bg-gray-900 transition"
+        >
+          Continue shopping
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
 
 {% schema %}
 {

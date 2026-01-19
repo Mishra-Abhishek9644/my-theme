@@ -5,41 +5,138 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/product
 {% endcomment %}
 
-<div class="product-images">
-  {% for image in product.images %}
-    {% render 'image', class: 'product-image', image: image %}
-  {% endfor %}
-</div>
+<section class="bg-white px-6 lg:px-16 py-16">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+    <!-- LEFT: Product Images -->
+    <div>
+      <!-- Main Image -->
+      <div class="aspect-square max-w-xxl flex justify-end  rounded-md overflow-hidden">
+        {% if product.featured_image %}
+          <img
+            src="{{ product.featured_image | image_url: width: 1200 }}"
+            alt="{{ product.title | escape }}"
+            class="w-lg h-full object-cover"
+            height=""
+            width=""
+          >
+        {% endif %}
+      </div>
 
-<div class="product-info">
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  <p>{{ product.description }}</p>
-</div>
+      <!-- Thumbnails -->
+      {% if product.images.size > 1 %}
+        <div class="mt-4 flex gap-3">
+          {% for image in product.images %}
+            <img
+              src="{{ image | image_url: width: 200 }}"
+              alt="{{ product.title }}"
+              class="w-20 h-20 object-cover rounded-md border cursor-pointer"
+              height=""
+              width=""
+            >
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
 
-<div class="product-form">
-  {% form 'product', product %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
+    <!-- RIGHT: Product Info -->
+    <div class="flex flex-col gap-6">
+      <p class="text-xl text-black">
+        {{ product.price | money }}
+      </p>
+      <div class="flex items-center gap-4">
+        <h1 class="text-3xl font-semibold text-black">
+          {{ product.title }}
+        </h1>
 
-    <select name="id">
-      {% for variant in product.variants %}
-        <option
-          value="{{ variant.id }}"
-          {% if variant == current_variant %}
-            selected="selected"
-          {% endif %}
-        >
-          {{ variant.title }} - {{ variant.price | money }}
-        </option>
-      {% endfor %}
-    </select>
+        {% if product.compare_at_price > product.price %}
+          <p class="text-gray-400 line-through">
+            {{ product.compare_at_price | money }}
+          </p>
+        {% endif %}
+      </div>
 
-    <input type="text" name="quantity" min="1" value="1">
+      <!-- Short description -->
+      {% if product.description != blank %}
+        <div class="text-gray-700 leading-relaxed">
+          {{ product.description }}
+        </div>
+      {% endif %}
 
-    <input type="submit" value="Add to cart">
-    {{ form | payment_button }}
-  {% endform %}
-</div>
+      <!-- Product Form -->
+      {% form 'product', product %}
+        {% assign current_variant = product.selected_or_first_available_variant %}
+
+        <!-- Variant selector -->
+        {% if product.variants.size > 1 %}
+          <select
+            name="id"
+            class="w-full border rounded-md px-4 py-3"
+          >
+            {% for variant in product.variants %}
+              <option
+                value="{{ variant.id }}"
+                {% if variant == current_variant %}
+                  selected
+                {% endif %}
+              >
+                {{ variant.title }}
+              </option>
+            {% endfor %}
+          </select>
+        {% else %}
+          <input
+            type="hidden"
+            name="id"
+            value="{{ current_variant.id }}"
+          >
+        {% endif %}
+
+        <!-- Quantity -->
+        <div class="flex items-center gap-4 mt-6">
+          <!-- Quantity Selector -->
+          <div class="flex items-center border rounded-md overflow-hidden">
+            <button
+              type="button"
+              class="px-4 py-3 text-lg hover:bg-gray-100"
+              onclick="this.nextElementSibling.stepDown()"
+            >
+              −
+            </button>
+
+            <input
+              type="number"
+              name="quantity"
+              min="1"
+              value="1"
+              class="w-14 text-center outline-none"
+            >
+
+            <button
+              type="button"
+              class="px-4 py-3 text-lg hover:bg-gray-100"
+              onclick="this.previousElementSibling.stepUp()"
+            >
+              +
+            </button>
+          </div>
+
+          <!-- Add to Cart -->
+          <button
+            type="submit"
+            class="flex-1 bg-white border border-1 text-black py-3.5 rounded-md hover:bg-black hover:text-white transition"
+          >
+            Add to cart
+          </button>
+        </div>
+
+        <!-- Dynamic checkout -->
+        <div class="mt-3">
+          {{ form | payment_button }}
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</section>
 
 {% schema %}
 {
