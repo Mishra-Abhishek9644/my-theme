@@ -46,15 +46,45 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!carousel) return;
 
   const slides = carousel.querySelectorAll("[data-hero-slide]");
+  if (slides.length < 2) return;
+
   let current = 0;
 
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove(
+        "opacity-100",
+        "scale-100",
+        "z-10",
+        "pointer-events-auto"
+      );
+      slide.classList.add(
+        "opacity-0",
+        "scale-105",
+        "z-0",
+        "pointer-events-none"
+      );
+
+      if (i === index) {
+        slide.classList.remove(
+          "opacity-0",
+          "scale-105",
+          "z-0",
+          "pointer-events-none"
+        );
+        slide.classList.add(
+          "opacity-100",
+          "scale-100",
+          "z-10",
+          "pointer-events-auto"
+        );
+      }
+    });
+  }
+
   setInterval(() => {
-    slides[current].classList.remove("opacity-100");
-    slides[current].classList.add("opacity-0");
-
     current = (current + 1) % slides.length;
-
-    slides[current].classList.remove("opacity-0");
-    slides[current].classList.add("opacity-100");
-  }, 5000); // 5 seconds
+    showSlide(current);
+  }, 5000);
 });
+
