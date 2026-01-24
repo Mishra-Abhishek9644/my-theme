@@ -132,16 +132,15 @@
           </button>
         </div>
         <button
-          class="w-full flex-1 bg-white border border-1 text-black py-3.5 rounded-md hover:bg-black hover:text-white transition"
-
+          type="button"
+          class="wishlist-btn w-full bg-white border text-black py-3.5 my-2 rounded-md hover:bg-black hover:text-white transition"
           data-id="{{ product.id }}"
-          data-handle="{{ product.handle }}"
         >
-          ❤️
+          ❤️ Add to Wishlist
         </button>
 
         <!-- Dynamic checkout -->
-        <div class="mt-3">
+        <div class="">
           {{ form | payment_button }}
         </div>
       {% endform %}

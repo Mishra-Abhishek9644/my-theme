@@ -16,35 +16,75 @@
     <!-- Your Tailwind browser build -->
     <script src="{{ 'browser.js' | asset_url }}" defer></script>
   </head>
-  <script>
+  
+<script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+  /* ✅ Get Wishlist */
+  function getWishlist() {
+    return JSON.parse(localStorage.getItem("wishlist")) || [];
+  }
 
-  document.querySelectorAll(".wishlist-btn").forEach(btn => {
+  /* ✅ Save Wishlist */
+  function saveWishlist(wishlist) {
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }
 
-    let id = btn.dataset.id;
+  /* ✅ Update Navbar Badge Count */
+  function updateWishlistBadge() {
+    let wishlist = getWishlist();
+    let badge = document.getElementById("wishlist-count");
 
-    // ✅ Already in wishlist
-    if (wishlist.includes(id)) {
-      btn.innerText = "✅ Wishlisted";
+    if (!badge) return;
+
+    if (wishlist.length > 0) {
+      badge.innerText = wishlist.length;
+      badge.classList.remove("hidden");
+    } else {
+      badge.classList.add("hidden");
     }
+  }
 
-    // ✅ Toggle wishlist
-    btn.addEventListener("click", () => {
+  /* ✅ Toggle Wishlist Button */
+  function setupWishlistButtons() {
+    let wishlist = getWishlist();
 
+    document.querySelectorAll(".wishlist-btn").forEach(btn => {
+
+      let id = btn.dataset.id;
+
+      // ✅ Initial State
       if (wishlist.includes(id)) {
-        wishlist = wishlist.filter(item => item !== id);
-        btn.innerText = "❤️ Add to Wishlist";
+        btn.innerText = "💚 Wishlisted";
       } else {
-        wishlist.push(id);
-        btn.innerText = "✅ Wishlisted";
+        btn.innerText = "❤️ Add to Wishlist";
       }
 
-      localStorage.setItem("wishlist", JSON.stringify(wishlist));
-    });
+      // ✅ Click Toggle
+      btn.addEventListener("click", () => {
 
-  });
+        wishlist = getWishlist();
+
+        if (wishlist.includes(id)) {
+          wishlist = wishlist.filter(item => item !== id);
+          btn.innerText = "❤️ Add to Wishlist";
+        } else {
+          wishlist.push(id);
+          btn.innerText = "💚 Wishlisted";
+        }
+
+        saveWishlist(wishlist);
+
+        // ✅ Update Badge Immediately
+        updateWishlistBadge();
+      });
+
+    });
+  }
+
+  /* ✅ Run on Page Load */
+  setupWishlistButtons();
+  updateWishlistBadge();
 
 });
 </script>

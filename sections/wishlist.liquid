@@ -1,19 +1,10 @@
-{% comment %}
-  Wishlist Page – Cart Inspired UI
-  Reads wishlist items from localStorage
-{% endcomment %}
-
 <section class="bg-white px-6 lg:px-16 py-16">
   <div class="max-w-6xl mx-auto">
-
-    <!-- Heading -->
     <h1 class="text-3xl font-semibold mb-10">
       Your Wishlist ❤️
     </h1>
 
-    <!-- Wishlist Container -->
     <div id="wishlist-wrapper"></div>
-
   </div>
 </section>
 
@@ -23,91 +14,60 @@ document.addEventListener("DOMContentLoaded", async () => {
   let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
   let wrapper = document.getElementById("wishlist-wrapper");
 
-  /* ✅ Empty Wishlist */
   if (wishlist.length === 0) {
     wrapper.innerHTML = `
       <div class="text-center py-20">
         <p class="text-lg text-gray-600 mb-6">
           Your wishlist is currently empty.
         </p>
-        <a
-          href="{{ routes.all_products_collection_url }}"
-          class="inline-block bg-black text-white px-8 py-3 rounded-md hover:bg-gray-900 transition"
-        >
+        <a href="{{ routes.all_products_collection_url }}"
+          class="inline-block bg-black text-white px-8 py-3 rounded-md">
           Continue shopping
         </a>
-      </div>
-    `;
+      </div>`;
     return;
   }
 
-  /* ✅ Fetch Products */
   let res = await fetch("/products.json?limit=250");
   let data = await res.json();
 
-  let wishlistHTML = `
-    <div class="divide-y border-t border-b">
-  `;
+  let html = `<div class="divide-y border-t border-b">`;
 
   wishlist.forEach(id => {
-
     let product = data.products.find(p => p.id == id);
+    if (!product) return;
 
-    if (product) {
-      wishlistHTML += `
-        <div class="py-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-
-          <!-- Image -->
-          <div class="w-24 h-24 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
-            <img
-              src="${product.images[0]?.src}"
-              class="w-full h-full object-cover"
-            >
-          </div>
-
-          <!-- Info -->
-          <div class="flex-1">
-            <a
-              href="/products/${product.handle}"
-              class="text-lg font-medium text-black hover:underline"
-            >
-              ${product.title}
-            </a>
-
-            <p class="text-sm text-gray-600 mt-2">
-              ₹${product.variants[0].price}
-            </p>
-
-            <!-- Remove -->
-            <button
-              class="remove-wishlist text-sm text-gray-500 hover:text-black underline mt-2"
-              data-id="${product.id}"
-            >
-              Remove
-            </button>
-          </div>
+    html += `
+      <div class="py-6 flex gap-6 items-center">
+        <div class="w-24 h-24 bg-gray-100 rounded-md overflow-hidden">
+          <img src="${product.images[0]?.src}" class="w-full h-full object-cover">
         </div>
-      `;
-    }
 
+        <div class="flex-1">
+          <a href="/products/${product.handle}"
+            class="text-lg font-medium hover:underline">
+            ${product.title}
+          </a>
+
+          <p class="text-sm mt-2">₹${product.variants[0].price}</p>
+
+          <button class="remove-wishlist underline text-sm mt-2"
+            data-id="${product.id}">
+            Remove
+          </button>
+        </div>
+      </div>`;
   });
 
-  wishlistHTML += `</div>`;
-  wrapper.innerHTML = wishlistHTML;
+  html += `</div>`;
+  wrapper.innerHTML = html;
 
-  /* ✅ Remove Logic */
   document.querySelectorAll(".remove-wishlist").forEach(btn => {
-
     btn.addEventListener("click", () => {
-      let id = btn.dataset.id;
-
-      wishlist = wishlist.filter(item => item !== id);
-
+      wishlist = wishlist.filter(x => x !== btn.dataset.id);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-
       location.reload();
     });
-
   });
 
 });
