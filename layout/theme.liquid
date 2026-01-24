@@ -16,6 +16,39 @@
     <!-- Your Tailwind browser build -->
     <script src="{{ 'browser.js' | asset_url }}" defer></script>
   </head>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+  document.querySelectorAll(".wishlist-btn").forEach(btn => {
+
+    let id = btn.dataset.id;
+
+    // ✅ Already in wishlist
+    if (wishlist.includes(id)) {
+      btn.innerText = "✅ Wishlisted";
+    }
+
+    // ✅ Toggle wishlist
+    btn.addEventListener("click", () => {
+
+      if (wishlist.includes(id)) {
+        wishlist = wishlist.filter(item => item !== id);
+        btn.innerText = "❤️ Add to Wishlist";
+      } else {
+        wishlist.push(id);
+        btn.innerText = "✅ Wishlisted";
+      }
+
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    });
+
+  });
+
+});
+</script>
+
 
   <body>
     {% section 'header' %}
