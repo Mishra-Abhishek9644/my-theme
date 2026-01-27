@@ -31,7 +31,7 @@
             "heading": "Get The Perfectly Hydrated Skin",
             "subheading": "Made Using clean, non-toxic ingredients, our product are designed for everyone",
             "button_text": "Shop Now",
-            "button_link": ""
+            "button_link": "shopify://collections/all"
           }
         },
         "slide_ExE9rc": {
@@ -42,7 +42,7 @@
             "heading": "Be Your Kind of Beauty",
             "subheading": "Made Using clean, non-toxic ingredients, our product are designed for everyone",
             "button_text": "Shop Now",
-            "button_link": ""
+            "button_link": "shopify://collections"
           }
         }
       },
