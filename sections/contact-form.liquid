@@ -1,24 +1,16 @@
 <section class="bg-white px-6 lg:px-16 py-20">
   <div class="max-w-3xl mx-auto">
-
     <!-- Title -->
-    <h1 class="text-4xl font-semibold text-center mb-10">
-      Contact Us
-    </h1>
+    <h1 class="text-4xl font-semibold text-center mb-10">Contact Us</h1>
 
     {% form 'contact' %}
-
       {% if form.posted_successfully? %}
-        <p class="text-green-600 text-center mb-6">
-          ✅ Your message has been sent successfully!
-        </p>
+        <p class="text-green-600 text-center mb-6">✅ Your message has been sent successfully!</p>
       {% endif %}
 
       <!-- Name -->
       <div class="mb-6">
-        <label class="block mb-2 text-sm font-medium">
-          Name
-        </label>
+        <label class="block mb-2 text-sm font-medium"> Name </label>
         <input
           type="text"
           name="contact[name]"
@@ -29,9 +21,7 @@
 
       <!-- Email -->
       <div class="mb-6">
-        <label class="block mb-2 text-sm font-medium">
-          Email
-        </label>
+        <label class="block mb-2 text-sm font-medium"> Email </label>
         <input
           type="email"
           name="contact[email]"
@@ -42,9 +32,7 @@
 
       <!-- Message -->
       <div class="mb-6">
-        <label class="block mb-2 text-sm font-medium">
-          Message
-        </label>
+        <label class="block mb-2 text-sm font-medium"> Message </label>
         <textarea
           name="contact[body]"
           rows="5"
@@ -58,9 +46,18 @@
         type="submit"
         class="w-full bg-black text-white py-3 rounded-md hover:bg-gray-900 transition"
       >
+        {% if form.posted_successfully? %}
+          Message sent!
+        {% endif %}
+
         Send Message
       </button>
 
+      {% if form.errors %}
+        <div class="text-red-600 mb-4">
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
     {% endform %}
   </div>
 </section>
