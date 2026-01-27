@@ -17,6 +17,29 @@ document.addEventListener("shopify:section:load", () => {
   }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const mobileMenu = document.getElementById("mobile-menu");
+  const openMenuBtn = document.getElementById("mobile-menu-open");
+  const closeMenuBtn = document.getElementById("mobile-menu-close");
+
+  if (!mobileMenu || !openMenuBtn || !closeMenuBtn) return;
+
+  openMenuBtn.addEventListener("click", () => {
+    mobileMenu.classList.remove("hidden");
+  });
+
+  closeMenuBtn.addEventListener("click", () => {
+    mobileMenu.classList.add("hidden");
+  });
+
+  mobileMenu.addEventListener("click", (e) => {
+    if (e.target === mobileMenu) {
+      mobileMenu.classList.add("hidden");
+    }
+  });
+});
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const carousel = document.querySelector("[data-hero-carousel]");

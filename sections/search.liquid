@@ -1,32 +1,59 @@
-<section class="px-10 py-16 max-w-6xl mx-auto">
-  <h1 class="text-3xl font-semibold mb-8">
+<section class="px-6 sm:px-10 py-16 max-w-6xl mx-auto">
+
+  <h1 class="text-3xl font-semibold mb-10">
     Search Results for "{{ search.terms }}"
   </h1>
 
   {% if search.results_count > 0 %}
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+    <!-- ✅ Responsive Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
       {% for item in search.results %}
         {% if item.object_type == 'product' %}
-          <div class="border p-4 rounded-md">
-            <a href="{{ item.url }}">
-              <img
-                src="{{ item.featured_image | image_url: width: 400 }}"
-                class="rounded-md"
-                height=""
-                width=""
-              >
-              <p class="mt-2 font-medium">{{ item.title }}</p>
-              <p class="text-sm text-gray-600">
+
+          <!-- ✅ Uniform Product Card -->
+          <a
+            href="{{ item.url }}"
+            class="group border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col bg-white"
+          >
+
+            <!-- ✅ Fixed Aspect Ratio Image -->
+            <div class="w-full aspect-[3/4] bg-gray-100 overflow-hidden">
+              {% if item.featured_image %}
+                <img
+                  src="{{ item.featured_image | image_url: width: 500 }}"
+                  alt="{{ item.title | escape }}"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                  height=""
+                  width=""
+                >
+              {% endif %}
+            </div>
+
+            <!-- ✅ Product Info Always Same Position -->
+            <div class="p-4 text-center flex flex-col flex-grow">
+              <p class="font-medium text-black text-base line-clamp-1">
+                {{ item.title }}
+              </p>
+
+              <p class="text-sm text-gray-600 mt-1">
                 {{ item.price | money }}
               </p>
-            </a>
-          </div>
+            </div>
+
+          </a>
+
         {% endif %}
       {% endfor %}
+
     </div>
+
   {% else %}
-    <p class="text-gray-600">
+    <p class="text-gray-600 text-lg">
       No results found.
     </p>
   {% endif %}
+
 </section>

@@ -11,6 +11,7 @@
   "sections": {
     "hero": {
       "type": "hero",
+      
       "blocks": {
         "slide_fneTcW": {
           "type": "slide",
