@@ -1,9 +1,11 @@
 <!-- Top Promo Bar -->
+
 <div class="flex justify-center bg-[#4d7560] text-white p-2 ">
   <p>Free Shipping on all orders ₹999+</p>
 </div>
 
 <!-- Header Main -->
+
 <div class="header-main grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_auto_1fr] items-center px-6 py-6 bg-white">
   <!-- Hamburger (mobile only) -->
   <button
@@ -15,13 +17,31 @@
   </button>
 
   <!-- Desktop Navigation -->
-  <nav class="hidden md:flex gap-10 justify-self-start">
-    {% for link in linklists['main-menu'].links %}
-      <a href="{{ link.url }}" class="text-black font-medium text-lg hover:underline">
-        {{ link.title }}
-      </a>
-    {% endfor %}
-  </nav>
+  <nav class="hidden md:flex gap-10 justify-self-start items-center">
+  {% for link in linklists['main-menu'].links %}
+    <a
+      href="{{ link.url }}"
+      class="
+        relative inline-block whitespace-nowrap
+        text-black font-medium text-lg
+
+        after:content-['']
+        after:absolute after:left-0 after:-bottom-1
+        after:h-[1.5px] after:w-full
+        after:bg-black
+
+        after:scale-x-0 after:origin-left
+        after:transition-transform after:duration-300
+
+        hover:after:scale-x-100
+        {% if link.active %} after:scale-x-100 {% endif %}
+      "
+    >
+      {{ link.title }}
+    </a>
+  {% endfor %}
+</nav>
+
 
   <!-- Logo (centered) -->
   <div class="flex justify-center">
@@ -84,22 +104,46 @@
       </form>
     </div>
 
-    <a href="/account" aria-label="Account">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="30"
-        height="30"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="lucide lucide-user-round-icon lucide-user-round"
-      >
-        <circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>
-      </svg>
-    </a>
+    {% if customer %}
+      <!-- Logged In -->
+      <a href="{{routes.account_url}}" aria-label="My Account">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-user-round"
+        >
+          <circle cx="12" cy="8" r="5"/>
+          <path d="M20 21a8 8 0 0 0-16 0"/>
+        </svg>
+      </a>
+    {% else %}
+      <!-- Not Logged In -->
+      <a href="{{ routes.account_login_url }}" aria-label="Login">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-user-round"
+        >
+          <circle cx="12" cy="8" r="5"/>
+          <path d="M20 21a8 8 0 0 0-16 0"/>
+        </svg>
+      </a>
+    {% endif %}
+
     <!-- Wishlist Icon -->
     <a href="/pages/wishlist" aria-label="Wishlist" class="relative inline-flex">
       <!-- Heart Icon -->
@@ -206,24 +250,22 @@
 }
 {% endschema %}
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener('DOMContentLoaded', () => {
+    const openBtn = document.getElementById('open-search');
+    const popup = document.getElementById('search-popup');
 
-  const openBtn = document.getElementById("open-search");
-  const popup = document.getElementById("search-popup");
+    if (!openBtn || !popup) return;
 
-  if (!openBtn || !popup) return;
+    // Open search box
+    openBtn.addEventListener('click', () => {
+      popup.classList.toggle('hidden');
+    });
 
-  // Open search box
-  openBtn.addEventListener("click", () => {
-    popup.classList.toggle("hidden");
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!popup.contains(e.target) && !openBtn.contains(e.target)) {
+        popup.classList.add('hidden');
+      }
+    });
   });
-
-  // Close when clicking outside
-  document.addEventListener("click", (e) => {
-    if (!popup.contains(e.target) && !openBtn.contains(e.target)) {
-      popup.classList.add("hidden");
-    }
-  });
-
-});
 </script>

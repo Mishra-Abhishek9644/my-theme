@@ -19,72 +19,65 @@ document.addEventListener("shopify:section:load", () => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  const openBtn = document.getElementById("mobile-menu-open");
-  const closeBtn = document.getElementById("mobile-menu-close");
-  const menu = document.getElementById("mobile-menu");
-
-  if (!openBtn || !closeBtn || !menu) return;
-
-  openBtn.addEventListener("click", () => {
-    menu.classList.remove("hidden");
-  });
-
-  closeBtn.addEventListener("click", () => {
-    menu.classList.add("hidden");
-  });
-
-  // Close when clicking outside
-  menu.addEventListener("click", (e) => {
-    if (e.target === menu) {
-      menu.classList.add("hidden");
-    }
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
   const carousel = document.querySelector("[data-hero-carousel]");
   if (!carousel) return;
 
   const slides = carousel.querySelectorAll("[data-hero-slide]");
-  if (slides.length < 2) return;
+  const dots = carousel.querySelectorAll(".hero-dot");
 
   let current = 0;
+  let interval;
 
+  // ✅ Show Slide + Active Dot
   function showSlide(index) {
     slides.forEach((slide, i) => {
-      slide.classList.remove(
-        "opacity-100",
-        "scale-100",
-        "z-10",
-        "pointer-events-auto"
-      );
-      slide.classList.add(
-        "opacity-0",
-        "scale-105",
-        "z-0",
-        "pointer-events-none"
-      );
-
       if (i === index) {
-        slide.classList.remove(
-          "opacity-0",
-          "scale-105",
-          "z-0",
-          "pointer-events-none"
-        );
-        slide.classList.add(
-          "opacity-100",
-          "scale-100",
-          "z-10",
-          "pointer-events-auto"
-        );
+        slide.classList.remove("opacity-0", "scale-105", "z-0");
+        slide.classList.add("opacity-100", "scale-100", "z-10");
+      } else {
+        slide.classList.remove("opacity-100", "scale-100", "z-10");
+        slide.classList.add("opacity-0", "scale-105", "z-0");
       }
     });
+
+    // ✅ Update Dot Active State
+    dots.forEach((dot, i) => {
+      if (i === index) {
+        dot.classList.add("bg-black");
+        dot.classList.remove("bg-transparent");
+      } else {
+        dot.classList.remove("bg-black");
+        dot.classList.add("bg-transparent");
+      }
+    });
+
+    current = index;
   }
 
-  setInterval(() => {
-    current = (current + 1) % slides.length;
-    showSlide(current);
-  }, 5000);
-});
+  // ✅ Auto Slide
+  function startAutoSlide() {
+    interval = setInterval(() => {
+      current = (current + 1) % slides.length;
+      showSlide(current);
+    }, 5000);
+  }
 
+  // ✅ Reset Auto Slide After Click
+  function resetAutoSlide() {
+    clearInterval(interval);
+    startAutoSlide();
+  }
+
+  // ✅ Dot Click
+  dots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      const index = Number(dot.dataset.slide);
+      showSlide(index);
+      resetAutoSlide();
+    });
+  });
+
+  // ✅ Start
+  showSlide(0);
+  startAutoSlide();
+});

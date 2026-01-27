@@ -1,0 +1,39 @@
+<section class="max-w-md mx-auto py-20 px-6">
+  <h1 class="text-3xl font-semibold mb-8 text-center">
+    Login
+  </h1>
+
+  {% form 'customer_login' %}
+
+    <input
+      type="email"
+      name="customer[email]"
+      placeholder="Email"
+      class="w-full border px-4 py-3 rounded-md mb-4"
+      required
+    >
+
+    <input
+      type="password"
+      name="customer[password]"
+      placeholder="Password"
+      class="w-full border px-4 py-3 rounded-md mb-6"
+      required
+    >
+
+    <button
+      type="submit"
+      class="w-full bg-black text-white py-3 rounded-md hover:bg-gray-900"
+    >
+      Login
+    </button>
+
+  {% endform %}
+
+  <p class="text-center mt-6 text-sm text-gray-600">
+    Don’t have an account?
+    <a href="{{ routes.account_register_url }}" class="underline">
+      Sign up
+    </a>
+  </p>
+</section>
