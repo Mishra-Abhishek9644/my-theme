@@ -1,0 +1,27 @@
+<section class="bg-white px-6 lg:px-16 py-16">
+  <div class="max-w-3xl mx-auto">
+
+    <h1 class="text-4xl font-bold mb-6">
+      {{ article.title }}
+    </h1>
+
+    <p class="text-gray-500 mb-8">
+      Published on {{ article.published_at | date: "%B %d, %Y" }}
+    </p>
+
+    {% if article.image %}
+      <img
+        src="{{ article.image | image_url: width: 1500 }}"
+        class="w-full rounded-lg mb-10"
+        alt="{{ article.title }}"
+        height=""
+        width=""
+      >
+    {% endif %}
+
+    <div class="prose max-w-none">
+      {{ article.content }}
+    </div>
+
+  </div>
+</section>
