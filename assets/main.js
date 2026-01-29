@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 5000);
   }
 
-  // ✅ Reset Auto Slide After Click
+  // ✅ Reset Auto Slide After Interaction
   function resetAutoSlide() {
     clearInterval(interval);
     startAutoSlide();
@@ -98,6 +98,36 @@ document.addEventListener("DOMContentLoaded", () => {
       showSlide(index);
       resetAutoSlide();
     });
+  });
+
+  // ✅ Swipe Support Variables
+  let startX = 0;
+  let endX = 0;
+
+  // ✅ Touch Start
+  carousel.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  // ✅ Touch End
+  carousel.addEventListener("touchend", (e) => {
+    endX = e.changedTouches[0].clientX;
+
+    let diff = startX - endX;
+
+    // ✅ Swipe Left → Next Slide
+    if (diff > 60) {
+      current = (current + 1) % slides.length;
+      showSlide(current);
+      resetAutoSlide();
+    }
+
+    // ✅ Swipe Right → Previous Slide
+    if (diff < -60) {
+      current = (current - 1 + slides.length) % slides.length;
+      showSlide(current);
+      resetAutoSlide();
+    }
   });
 
   // ✅ Start
