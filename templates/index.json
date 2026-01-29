@@ -11,7 +11,6 @@
   "sections": {
     "hero": {
       "type": "hero",
-      
       "blocks": {
         "slide_fneTcW": {
           "type": "slide",
@@ -60,10 +59,60 @@
         "collection": "frontpage",
         "products_limit": 4
       }
+    },
+    "176968131634ec03db": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_d6bea7c_JngqBK": {
+          "type": "ai_gen_block_d6bea7c",
+          "settings": {
+            "heading": "Shop by collection",
+            "description": "Explore our curated collections",
+            "collections": [
+              "summer-collection",
+              "winter-collection",
+              "frontpage",
+              "skincare"
+            ],
+            "desktop_width_percent": 100,
+            "columns_desktop": 4,
+            "columns_tablet": 3,
+            "columns_mobile": "2",
+            "grid_gap": 20,
+            "container_width": 1200,
+            "image_aspect_ratio": 100,
+            "card_border_radius": 8,
+            "card_padding": 16,
+            "card_background": "#FFFFFF",
+            "show_overlay": true,
+            "overlay_opacity": 0.4,
+            "overlay_strength": 0.5,
+            "heading_alignment": "center",
+            "heading_size": 32,
+            "heading_color": "#333333",
+            "description_size": 16,
+            "description_color": "#666666",
+            "heading_spacing": 32,
+            "collection_title_size": 18,
+            "collection_title_color": "#333333",
+            "show_product_count": true,
+            "product_count_size": 14,
+            "product_count_color": "#999999",
+            "section_padding": 40,
+            "grid_top_spacing": 24
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_d6bea7c_JngqBK"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "hero",
-    "collection-grid"
+    "collection-grid",
+    "176968131634ec03db"
   ]
 }
