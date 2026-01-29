@@ -1,30 +1,30 @@
-<section class="px-6 sm:px-10 py-16 max-w-6xl mx-auto">
+<section class="px-4 sm:px-6 py-12 max-w-5xl mx-auto">
 
-  <h1 class="text-3xl font-semibold mb-10">
+  <h1 class="text-2xl font-semibold mb-8">
     Search Results for "{{ search.terms }}"
   </h1>
 
   {% if search.results_count > 0 %}
 
-    <!-- ✅ Responsive Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <!-- ✅ Smaller Responsive Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
       {% for item in search.results %}
         {% if item.object_type == 'product' %}
 
-          <!-- ✅ Uniform Product Card -->
+          <!-- ✅ Smaller Card -->
           <a
             href="{{ item.url }}"
-            class="group border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col bg-white"
+            class="group border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition bg-white"
           >
 
-            <!-- ✅ Fixed Aspect Ratio Image -->
-            <div class="w-full aspect-[3/4] bg-gray-100 overflow-hidden">
+            <!-- ✅ Smaller Image Box -->
+            <div class="w-full aspect-square bg-gray-100 overflow-hidden">
               {% if item.featured_image %}
                 <img
-                  src="{{ item.featured_image | image_url: width: 500 }}"
+                  src="{{ item.featured_image | image_url: width: 400 }}"
                   alt="{{ item.title | escape }}"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  class="w-full h-full object-content group-hover:scale-105 transition duration-300"
                   loading="lazy"
                   height=""
                   width=""
@@ -32,9 +32,9 @@
               {% endif %}
             </div>
 
-            <!-- ✅ Product Info Always Same Position -->
-            <div class="p-4 text-center flex flex-col flex-grow">
-              <p class="font-medium text-black text-base line-clamp-1">
+            <!-- ✅ Compact Info -->
+            <div class="p-2 py-4 text-center">
+              <p class="text-md font-medium text-black truncate">
                 {{ item.title }}
               </p>
 

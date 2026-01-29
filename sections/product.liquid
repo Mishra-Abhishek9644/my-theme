@@ -16,7 +16,7 @@
             id="main-product-image"
             src="{{ product.featured_image | image_url: width: 1200 }}"
             alt="{{ product.title | escape }}"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-content"
             height=""
             width=""
           >
@@ -30,7 +30,7 @@
             <img
               src="{{ image | image_url: width: 200 }}"
               data-large="{{ image | image_url: width: 1200 }}"
-
+              data-index="{{ forloop.index0 }}"
               alt="{{ product.title }}"
               class="w-20 h-20 object-cover rounded-md border cursor-pointer"
               height=""
@@ -162,14 +162,37 @@
     const mainImage = document.getElementById('main-product-image');
     const thumbnails = document.querySelectorAll('[data-large]');
 
-    thumbnails.forEach((thumb) => {
-      thumb.addEventListener('click', () => {
-        mainImage.src = thumb.dataset.large;
+    let currentIndex = 0;
+    let startX = 0;
+    let endX = 0;
 
-        // Optional: active border
-        thumbnails.forEach((t) => t.classList.remove('ring-2', 'ring-black'));
-        thumb.classList.add('ring-2', 'ring-black');
-      });
+    function updateImage(index) {
+      // loop back if out of range
+      if (index < 0) index = thumbnails.length - 1;
+      if (index >= thumbnails.length) index = 0;
+
+      currentIndex = index;
+      mainImage.src = thumbnails[index].dataset.large;
+    }
+
+    // Swipe Start
+    mainImage.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    // Swipe End
+    mainImage.addEventListener('touchend', (e) => {
+      endX = e.changedTouches[0].clientX;
+
+      let diff = startX - endX;
+
+      if (diff > 50) {
+        updateImage(currentIndex + 1); // swipe left
+      }
+
+      if (diff < -50) {
+        updateImage(currentIndex - 1); // swipe right
+      }
     });
   });
 </script>
