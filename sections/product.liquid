@@ -10,18 +10,23 @@
     <!-- LEFT: Product Images -->
     <div>
       <!-- Main Image -->
-      <div class="aspect-square max-w-xxl flex justify-end  rounded-md overflow-hidden">
-        {% if product.featured_image %}
-          <img
-            id="main-product-image"
-            src="{{ product.featured_image | image_url: width: 1200 }}"
-            alt="{{ product.title | escape }}"
-            class="w-full h-full object-content"
-            height=""
-            width=""
-          >
-        {% endif %}
-      </div>
+      <div class="overflow-hidden relative aspect-square rounded-md">
+
+  <!-- ✅ Slider Track -->
+  <div id="slider-track" class="flex transition-transform duration-300 ease-in-out">
+
+    {% for image in product.images %}
+      <img
+        src="{{ image | image_url: width: 1200 }}"
+        class="w-full flex-shrink-0 object-cover"
+        height=""
+        width=""
+      >
+    {% endfor %}
+
+  </div>
+</div>
+
 
       <!-- Thumbnails -->
       {% if product.images.size > 1 %}
@@ -158,41 +163,86 @@
 }
 {% endschema %}
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const mainImage = document.getElementById('main-product-image');
-    const thumbnails = document.querySelectorAll('[data-large]');
+document.addEventListener("DOMContentLoaded", function () {
 
-    let currentIndex = 0;
-    let startX = 0;
-    let endX = 0;
+  const track = document.getElementById("slider-track");
+  const slides = track.querySelectorAll("img");
+  const thumbnails = document.querySelectorAll("[data-index]");
 
-    function updateImage(index) {
-      // loop back if out of range
-      if (index < 0) index = thumbnails.length - 1;
-      if (index >= thumbnails.length) index = 0;
+  let currentIndex = 0;
 
-      currentIndex = index;
-      mainImage.src = thumbnails[index].dataset.large;
+  // ✅ Update Slide Position
+  function updateSlide(index) {
+
+    // Boundaries
+    if (index < 0) index = 0;
+    if (index >= slides.length) index = slides.length - 1;
+
+    currentIndex = index;
+
+    // Smooth slide
+    track.style.transition = "transform 0.3s ease";
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    // Active Thumbnail Border
+    thumbnails.forEach(t => t.classList.remove("ring-2", "ring-black"));
+    if (thumbnails[index]) {
+      thumbnails[index].classList.add("ring-2", "ring-black");
     }
+  }
 
-    // Swipe Start
-    mainImage.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-    });
-
-    // Swipe End
-    mainImage.addEventListener('touchend', (e) => {
-      endX = e.changedTouches[0].clientX;
-
-      let diff = startX - endX;
-
-      if (diff > 50) {
-        updateImage(currentIndex + 1); // swipe left
-      }
-
-      if (diff < -50) {
-        updateImage(currentIndex - 1); // swipe right
-      }
+  // ✅ Thumbnail Click
+  thumbnails.forEach((thumb) => {
+    thumb.addEventListener("click", () => {
+      const index = parseInt(thumb.dataset.index);
+      updateSlide(index);
     });
   });
+
+  // ✅ Swipe + Drag Variables
+  let startX = 0;
+  let moveX = 0;
+  let isDragging = false;
+
+  // ✅ Touch Start
+  track.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+
+    // Disable transition while dragging
+    track.style.transition = "none";
+  });
+
+  // ✅ Touch Move (Drag Image)
+  track.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
+
+    moveX = e.touches[0].clientX - startX;
+
+    track.style.transform =
+      `translateX(calc(-${currentIndex * 100}% + ${moveX}px))`;
+  });
+
+  // ✅ Touch End
+  track.addEventListener("touchend", () => {
+    isDragging = false;
+
+    // Swipe Threshold
+    if (moveX < -80) {
+      updateSlide(currentIndex + 1); // Next
+    }
+    else if (moveX > 80) {
+      updateSlide(currentIndex - 1); // Prev
+    }
+    else {
+      updateSlide(currentIndex); // Snap back
+    }
+
+    moveX = 0;
+  });
+
+});
 </script>
+
+
+  
