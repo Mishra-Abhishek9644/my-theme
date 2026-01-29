@@ -11,22 +11,18 @@
     <div>
       <!-- Main Image -->
       <div class="overflow-hidden relative aspect-square rounded-md">
-
-  <!-- ✅ Slider Track -->
-  <div id="slider-track" class="flex transition-transform duration-300 ease-in-out">
-
-    {% for image in product.images %}
-      <img
-        src="{{ image | image_url: width: 1200 }}"
-        class="w-full flex-shrink-0 object-cover"
-        height=""
-        width=""
-      >
-    {% endfor %}
-
-  </div>
-</div>
-
+        <!-- ✅ Slider Track -->
+        <div id="slider-track" class="flex transition-transform duration-300 ease-in-out">
+          {% for image in product.images %}
+            <img
+              src="{{ image | image_url: width: 1200 }}"
+              class="w-full flex-shrink-0 object-cover"
+              height=""
+              width=""
+            >
+          {% endfor %}
+        </div>
+      </div>
 
       <!-- Thumbnails -->
       {% if product.images.size > 1 %}
@@ -76,27 +72,48 @@
 
         <!-- Variant selector -->
         {% if product.variants.size > 1 %}
-          <select
-            name="id"
-            class="w-full border rounded-md px-4 py-3"
-          >
-            {% for variant in product.variants %}
-              <option
-                value="{{ variant.id }}"
-                {% if variant == current_variant %}
-                  selected
-                {% endif %}
-              >
-                {{ variant.title }}
-              </option>
-            {% endfor %}
-          </select>
+          {% assign color_option_index = 0 %}
+
+          {%- for option in product.options_with_values -%}
+            {% if option.name == 'Color' or option.name == 'colour' %}
+              {% assign color_option_index = forloop.index0 %}
+            {% endif %}
+          {%- endfor -%}
+
+          <!-- ✅ Color Variant Swatches -->
+          <div class="mt-4">
+            <p class="font-medium mb-2">Choose Color:</p>
+
+            <div class="flex gap-3">
+              {% for value in product.options_with_values[color_option_index].values %}
+                {% assign matched_variant = product.variants | where: 'option1', value | first %}
+
+                <label class="cursor-pointer">
+                  <!-- Hidden Radio -->
+                  <input
+                    type="radio"
+                    name="id"
+                    value="{{ matched_variant.id }}"
+                    class="hidden peer variant-radio"
+                    data-image="{{ matched_variant.featured_image | image_url: width: 1200 }}"
+                    {% if forloop.first %}
+                      checked
+                    {% endif %}
+                  >
+
+                  <!-- Circle Swatch -->
+                  <div
+                    class="w-10 h-10 rounded-full border peer-checked:ring-2 peer-checked:ring-black"
+                    style="background-color: {{ value | downcase }};"
+                    title="{{ value }}"
+                  ></div>
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+
         {% else %}
-          <input
-            type="hidden"
-            name="id"
-            value="{{ current_variant.id }}"
-          >
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
         {% endif %}
 
         <!-- Quantity -->
@@ -168,23 +185,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const track = document.getElementById("slider-track");
   const slides = track.querySelectorAll("img");
   const thumbnails = document.querySelectorAll("[data-index]");
+  const radios = document.querySelectorAll(".variant-radio");
 
   let currentIndex = 0;
 
   // ✅ Update Slide Position
   function updateSlide(index) {
 
-    // Boundaries
     if (index < 0) index = 0;
     if (index >= slides.length) index = slides.length - 1;
 
     currentIndex = index;
 
-    // Smooth slide
     track.style.transition = "transform 0.3s ease";
     track.style.transform = `translateX(-${currentIndex * 100}%)`;
 
-    // Active Thumbnail Border
+    // ✅ Highlight active thumbnail
     thumbnails.forEach(t => t.classList.remove("ring-2", "ring-black"));
     if (thumbnails[index]) {
       thumbnails[index].classList.add("ring-2", "ring-black");
@@ -194,55 +210,56 @@ document.addEventListener("DOMContentLoaded", function () {
   // ✅ Thumbnail Click
   thumbnails.forEach((thumb) => {
     thumb.addEventListener("click", () => {
-      const index = parseInt(thumb.dataset.index);
-      updateSlide(index);
+      updateSlide(parseInt(thumb.dataset.index));
     });
   });
 
-  // ✅ Swipe + Drag Variables
+  // ✅ Color Swatch Click → Change Image
+  radios.forEach((radio) => {
+    radio.addEventListener("change", function () {
+
+      const variantImage = this.dataset.image;
+      if (!variantImage) return;
+
+      slides.forEach((slide, index) => {
+
+        // Match variant featured image
+        if (slide.src.includes(variantImage.split("?")[0])) {
+          updateSlide(index);
+        }
+
+      });
+    });
+  });
+
+  // ✅ Swipe Support
   let startX = 0;
   let moveX = 0;
   let isDragging = false;
 
-  // ✅ Touch Start
   track.addEventListener("touchstart", (e) => {
     startX = e.touches[0].clientX;
     isDragging = true;
-
-    // Disable transition while dragging
     track.style.transition = "none";
   });
 
-  // ✅ Touch Move (Drag Image)
   track.addEventListener("touchmove", (e) => {
     if (!isDragging) return;
-
     moveX = e.touches[0].clientX - startX;
 
     track.style.transform =
       `translateX(calc(-${currentIndex * 100}% + ${moveX}px))`;
   });
 
-  // ✅ Touch End
   track.addEventListener("touchend", () => {
     isDragging = false;
 
-    // Swipe Threshold
-    if (moveX < -80) {
-      updateSlide(currentIndex + 1); // Next
-    }
-    else if (moveX > 80) {
-      updateSlide(currentIndex - 1); // Prev
-    }
-    else {
-      updateSlide(currentIndex); // Snap back
-    }
+    if (moveX < -80) updateSlide(currentIndex + 1);
+    else if (moveX > 80) updateSlide(currentIndex - 1);
+    else updateSlide(currentIndex);
 
     moveX = 0;
   });
 
 });
 </script>
-
-
-  
