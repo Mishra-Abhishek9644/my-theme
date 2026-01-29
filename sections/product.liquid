@@ -96,7 +96,7 @@
                     value="{{ matched_variant.id }}"
                     class="hidden peer variant-radio"
                     data-image="{{ matched_variant.featured_image | image_url: width: 1200 }}"
-                    {% if forloop.first %}
+                    {% if matched_variant.id == current_variant.id %}
                       checked
                     {% endif %}
                   >
@@ -180,86 +180,79 @@
 }
 {% endschema %}
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener('DOMContentLoaded', function () {
+    const track = document.getElementById('slider-track');
+    const slides = track.querySelectorAll('img');
+    const thumbnails = document.querySelectorAll('[data-index]');
+    const radios = document.querySelectorAll('.variant-radio');
 
-  const track = document.getElementById("slider-track");
-  const slides = track.querySelectorAll("img");
-  const thumbnails = document.querySelectorAll("[data-index]");
-  const radios = document.querySelectorAll(".variant-radio");
+    let currentIndex = 0;
 
-  let currentIndex = 0;
+    // ✅ Update Slide Position
+    function updateSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= slides.length) index = slides.length - 1;
 
-  // ✅ Update Slide Position
-  function updateSlide(index) {
+      currentIndex = index;
 
-    if (index < 0) index = 0;
-    if (index >= slides.length) index = slides.length - 1;
+      track.style.transition = 'transform 0.3s ease';
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
 
-    currentIndex = index;
-
-    track.style.transition = "transform 0.3s ease";
-    track.style.transform = `translateX(-${currentIndex * 100}%)`;
-
-    // ✅ Highlight active thumbnail
-    thumbnails.forEach(t => t.classList.remove("ring-2", "ring-black"));
-    if (thumbnails[index]) {
-      thumbnails[index].classList.add("ring-2", "ring-black");
+      // ✅ Highlight active thumbnail
+      thumbnails.forEach((t) => t.classList.remove('ring-2', 'ring-black'));
+      if (thumbnails[index]) {
+        thumbnails[index].classList.add('ring-2', 'ring-black');
+      }
     }
-  }
 
-  // ✅ Thumbnail Click
-  thumbnails.forEach((thumb) => {
-    thumb.addEventListener("click", () => {
-      updateSlide(parseInt(thumb.dataset.index));
-    });
-  });
-
-  // ✅ Color Swatch Click → Change Image
-  radios.forEach((radio) => {
-    radio.addEventListener("change", function () {
-
-      const variantImage = this.dataset.image;
-      if (!variantImage) return;
-
-      slides.forEach((slide, index) => {
-
-        // Match variant featured image
-        if (slide.src.includes(variantImage.split("?")[0])) {
-          updateSlide(index);
-        }
-
+    // ✅ Thumbnail Click
+    thumbnails.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        updateSlide(parseInt(thumb.dataset.index));
       });
     });
+
+    // ✅ Color Swatch Click → Change Image
+    radios.forEach((radio) => {
+      radio.addEventListener('change', function () {
+        const variantImage = this.dataset.image;
+        if (!variantImage) return;
+
+        slides.forEach((slide, index) => {
+          // Match variant featured image
+          if (slide.src.includes(variantImage.split('?')[0])) {
+            updateSlide(index);
+          }
+        });
+      });
+    });
+
+    // ✅ Swipe Support
+    let startX = 0;
+    let moveX = 0;
+    let isDragging = false;
+
+    track.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+      track.style.transition = 'none';
+    });
+
+    track.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      moveX = e.touches[0].clientX - startX;
+
+      track.style.transform = `translateX(calc(-${currentIndex * 100}% + ${moveX}px))`;
+    });
+
+    track.addEventListener('touchend', () => {
+      isDragging = false;
+
+      if (moveX < -80) updateSlide(currentIndex + 1);
+      else if (moveX > 80) updateSlide(currentIndex - 1);
+      else updateSlide(currentIndex);
+
+      moveX = 0;
+    });
   });
-
-  // ✅ Swipe Support
-  let startX = 0;
-  let moveX = 0;
-  let isDragging = false;
-
-  track.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-    isDragging = true;
-    track.style.transition = "none";
-  });
-
-  track.addEventListener("touchmove", (e) => {
-    if (!isDragging) return;
-    moveX = e.touches[0].clientX - startX;
-
-    track.style.transform =
-      `translateX(calc(-${currentIndex * 100}% + ${moveX}px))`;
-  });
-
-  track.addEventListener("touchend", () => {
-    isDragging = false;
-
-    if (moveX < -80) updateSlide(currentIndex + 1);
-    else if (moveX > 80) updateSlide(currentIndex - 1);
-    else updateSlide(currentIndex);
-
-    moveX = 0;
-  });
-
-});
 </script>
