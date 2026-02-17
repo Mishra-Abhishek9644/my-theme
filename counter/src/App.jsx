@@ -7,18 +7,14 @@ function App() {
   return (
     <>
 
-      <h1>Vite + React</h1>
+     <div className='flex flex-col justify-center items-center gap-2 w-full py-4 my-2'>
+       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button className='px-3 py-2 rounded-2xl bg-black text-white hover:scale-105' onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+     </div>
     </>
   )
 }
