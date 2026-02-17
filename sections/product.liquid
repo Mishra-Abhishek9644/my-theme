@@ -254,5 +254,11 @@
 
       moveX = 0;
     });
+
+    const checkedRadio = document.querySelector('.variant-radio:checked');
+
+    if (checkedRadio) {
+      checkedRadio.dispatchEvent(new Event('change'));
+    }
   });
 </script>
